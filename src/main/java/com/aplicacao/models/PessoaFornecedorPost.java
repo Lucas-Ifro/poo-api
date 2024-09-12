@@ -1,23 +1,22 @@
-package com.project.model;
+package org.aplicacao.models;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class PessoaFornecedor {
-    int id;
-    String cnpj;
-    String responsavel;
-    String contato;
-    String telefones;
-    String fantasia;
-    String razaoSocial;
-    char active;
-    LocalDate dataLancamento;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PessoaFornecedorPost {
+
+    private String cnpj;
+    private String responsavel;
+    private String contato;
+    private String telefones;
+    private String fantasia;
+    private String razaoSocial;
+    private String active;
+    private LocalDateTime dataLancamento;
 
     // Construtor
-    public PessoaFornecedor(int id, String cnpj, String responsavel, String contato,
-                            String telefones, String fantasia, String razaoSocial,
-                            char active, LocalDate dataLancamento) {
-        this.id = id;
+    public PessoaFornecedorPost(String cnpj, String responsavel, String contato, String telefones,
+                                String fantasia, String razaoSocial, String active, LocalDateTime dataLancamento) {
         this.cnpj = cnpj;
         this.responsavel = responsavel;
         this.contato = contato;
@@ -27,14 +26,8 @@ public class PessoaFornecedor {
         this.active = active;
         this.dataLancamento = dataLancamento;
     }
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    // Getters e Setters
     public String getCnpj() {
         return cnpj;
     }
@@ -83,19 +76,33 @@ public class PessoaFornecedor {
         this.razaoSocial = razaoSocial;
     }
 
-    public char getActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(char active) {
+    public void setActive(String active) {
         this.active = active;
     }
 
-    public LocalDate getDataLancamento() {
+    public LocalDateTime getDataLancamento() {
         return dataLancamento;
     }
 
-    public void setDataLancamento(LocalDate dataLancamento) {
+    public void setDataLancamento(LocalDateTime dataLancamento) {
         this.dataLancamento = dataLancamento;
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaFornecedorPost{" +
+                "cnpj='" + cnpj + '\'' +
+                ", responsavel='" + responsavel + '\'' +
+                ", contato='" + contato + '\'' +
+                ", telefones='" + telefones + '\'' +
+                ", fantasia='" + fantasia + '\'' +
+                ", razaoSocial='" + razaoSocial + '\'' +
+                ", active='" + active + '\'' +
+                ", dataLancamento=" + dataLancamento +
+                '}';
     }
 }
