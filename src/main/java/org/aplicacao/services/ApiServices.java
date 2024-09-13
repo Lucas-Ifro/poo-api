@@ -1,8 +1,5 @@
 package org.aplicacao.services;
-import java.io.IOException;
-import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aplicacao.models.PessoaFornecedor;
 import java.net.http.HttpClient;
@@ -11,7 +8,6 @@ import java.net.URI;
 import java.net.http.HttpResponse;
 
 import org.aplicacao.models.PessoaFornecedorPost;
-import org.aplicacao.models.ResponseList;
 import org.aplicacao.models.ResponseObject;
 
 public class ApiServices {

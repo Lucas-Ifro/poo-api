@@ -10,8 +10,7 @@ public class ResponseList {
     private int code;
     private boolean error;
     private String message;
-    private int total;
-    private int limite;
+
 
     // Getters e Setters
     public List<PessoaFornecedor> getData() {
@@ -46,21 +45,7 @@ public class ResponseList {
         this.message = message;
     }
 
-    public int getTotal() {
-        return total;
-    }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public int getLimite() {
-        return limite;
-    }
-
-    public void setLimite(int limite) {
-        this.limite = limite;
-    }
 
     @Override
     public String toString() {
@@ -69,8 +54,6 @@ public class ResponseList {
                 ", code=" + code +
                 ", error=" + error +
                 ", message='" + message + '\'' +
-                ", total=" + total +
-                ", limite=" + limite +
                 '}';
     }
 }
