@@ -1,65 +1,151 @@
 package org.aplicacao;
 
 import java.util.List;
-import org.aplicacao.models.PessoaFornecedorPost;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.aplicacao.services.ApiServices;
 import org.aplicacao.models.PessoaFornecedor;
-import java.util.Random;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import org.aplicacao.models.PessoaFornecedorPost;
+import org.aplicacao.services.ApiServices;
 
 public class Main {
     public static void main(String[] args) {
-        Random random = new Random();
-        ApiServices servicoApi = new ApiServices();
+        Scanner scanner = new Scanner(System.in);
+        String regex = "^(C|E|A|L|LI|S)$";
 
-        // Remover paginação e obter a lista completa de fornecedores
-        PessoaFornecedor listaFornecedor = servicoApi.getPessoaFornecedor("http://localhost:3060/PessoaFornecedor");
+        // Criando o pattern e matcher
+        Pattern pattern = Pattern.compile(regex);
 
-        // Obter um fornecedor por ID
-        int id = 300;
-        PessoaFornecedor listadaPorId = servicoApi.getIdPessoaFornecedor("http://localhost:3060/PessoaFornecedor", id);
+        String opiton;
+        boolean controle = true;
+        while (controle) {
+            System.out.println("Sistema de Fornecedores - O que deseja fazer?");
+            System.out.println("C - Criar");
+            System.out.println("E - Excluir");
+            System.out.println("A - Atualizar");
+            System.out.println("L - Listar");
+            System.out.println("LI - Listar por ID");
+            System.out.println("S - Sair do Sistema");
 
-        // Atualizar um fornecedor
-        listadaPorId.setCnpj("12.345.678/0001-95"); // Atualize o CNPJ como exemplo
-        PessoaFornecedor atualizada = servicoApi.putPessoaFornecedor("http://localhost:3060/PessoaFornecedor", listadaPorId, id);
+            System.out.println("Escolha uma opção entre as acima:");
+            opiton = scanner.next();
 
-        // Criar um novo elemento
-        //int comprasId = listaFornecedor.get(3).getErp_compras_id();
-        //int produtosId = listaFornecedor.get(5).getErp_produtos_id();
+            ApiServices servicoApi = new ApiServices();
+            switch (opiton) {
+                case "C":
+                    System.out.println("Informe o CNPJ: ");
+                    String cnpj = scanner.next();
+                    System.out.println("Informe o nome do fornecedor: ");
+                    String nome = scanner.next();
+                    System.out.println("Informe o e-mail: ");
+                    String email = scanner.next();
+                    System.out.println("Informe o telefone: ");
+                    String telefone = scanner.next();
+                    System.out.println("Informe a empresa: ");
+                    String empresa = scanner.next();
+                    System.out.println("Informe o nome da empresa: ");
+                    String nomeEmpresa = scanner.next();
+                    System.out.println("Informe o status (Y/N): ");
+                    String status = scanner.next();
 
-        // Criar a data no padrão ISO
-        LocalDateTime now = LocalDateTime.now();
-        String iso8601Date = now.format(DateTimeFormatter.ISO_DATE_TIME);
+                    PessoaFornecedorPost novoFornecedor = new PessoaFornecedorPost(
+                            cnpj,
+                            nome,
+                            email,
+                            telefone,
+                            empresa,
+                            nomeEmpresa,
+                            status
+                    );
 
-        // Criar o objeto PessoaFornecedorPost
-        PessoaFornecedorPost novoElemento = new PessoaFornecedorPost(
-                "12.345.678/0001-95", // Exemplo de CNPJ
-                "Maria Oliveira",     // Exemplo de Responsável
-                "maria.oliveira@exemplo.com", // Exemplo de Contato
-                "(11) 98765-4321",   // Exemplo de Telefones
-                "Loja Nova",         // Exemplo de Fantasia
-                "Loja Nova Ltda",    // Exemplo de Razão Social
-                "Y",                 // Status ativo
-                LocalDateTime.now()  // Data de Lançamento
-        );
+                    PessoaFornecedor criado = servicoApi.postPessoaFornecedor("http://localhost:3060/PessoaFornecedor", novoFornecedor);
+                    System.out.println("Novo fornecedor criado!");
+                    System.out.println(criado);
+                    System.out.println("  ");
+                    break;
 
-        PessoaFornecedor apiCriado = servicoApi.postPessoaFornecedor("http://localhost:3060/PessoaFornecedor", novoElemento);
+                case "E":
+                    System.out.println("Informe o ID do fornecedor a ser excluído: ");
+                    int idExcluir = scanner.nextInt();
+                    PessoaFornecedor excluido = servicoApi.deletePessoaFornecedor("http://localhost:3060/PessoaFornecedor", idExcluir);
+                    System.out.println("Fornecedor excluído:");
+                    System.out.println(excluido);
+                    System.out.println("  ");
+                    break;
 
-        // Excluir um elemento
-        PessoaFornecedor elementoExcluido = servicoApi.deletePessoaFornecedor("http://localhost:3060/PessoaFornecedor", apiCriado.getId());
+                case "S":
+                    controle = false;
+                    System.out.println("Você saiu do sistema.");
+                    break;
 
-        // Exibir os resultados
-        System.out.println("Fornecedor paginado:");
-        System.out.println(listaFornecedor.toString());
-        System.out.println("Fornecedor por ID:");
-        System.out.println(listadaPorId.toString());
-        System.out.println("Fornecedor atualizado:");
-        System.out.println(atualizada.toString());
-        System.out.println("Fornecedor criado:");
-        System.out.println(apiCriado.toString());
-        System.out.println("Fornecedor excluído:");
-        System.out.println(elementoExcluido.toString());
+                case "A":
+                    System.out.println("Informe o ID do fornecedor a ser atualizado: ");
+                    int idAtualizado = scanner.nextInt();
+                    System.out.println("Informe o CNPJ: ");
+                    String cnpjAtualizado = scanner.next();
+                    System.out.println("Informe o nome do fornecedor: ");
+                    String nomeAtualizado = scanner.next();
+                    System.out.println("Informe o e-mail: ");
+                    String emailAtualizado = scanner.next();
+                    System.out.println("Informe o telefone: ");
+                    String telefoneAtualizado = scanner.next();
+                    System.out.println("Informe a empresa: ");
+                    String empresaAtualizada = scanner.next();
+                    System.out.println("Informe o nome da empresa: ");
+                    String nomeEmpresaAtualizado = scanner.next();
+                    System.out.println("Informe o status (Y/N): ");
+                    String statusAtualizado = scanner.next();
+                    String dataLancamentoAtualizado = null;
+
+                    PessoaFornecedor fornecedorAtualizado = new PessoaFornecedor(
+                            idAtualizado,
+                            dataLancamentoAtualizado,
+                            statusAtualizado,
+                            nomeAtualizado,
+                            nomeEmpresaAtualizado,
+                            telefoneAtualizado,
+                            emailAtualizado,
+                            empresaAtualizada,
+                            cnpjAtualizado);
+
+                    PessoaFornecedor atualizado = servicoApi.putPessoaFornecedor("http://localhost:3060/PessoaFornecedor", fornecedorAtualizado, idAtualizado);
+                    System.out.println("Fornecedor atualizado!");
+                    System.out.println(atualizado);
+                    System.out.println("  ");
+                    break;
+
+                case "L":
+                    List<PessoaFornecedor> pessoa = servicoApi.getPessoaFornecedor("http://localhost:3060/PessoaFornecedor");
+                    if (pessoa == null || pessoa.isEmpty()) {
+                        System.out.println("Não foi possível listar os fornecedores. Verifique o limite e a página!");
+                    } else {
+                        for (PessoaFornecedor fornecedor : pessoa) {
+                            System.out.println(fornecedor);
+                            System.out.println("  ");
+                        }
+                    }
+                    break;
+
+                case "LI":
+                    System.out.println("Informe o ID: ");
+                    int id = scanner.nextInt();
+                    PessoaFornecedor fornecedor = servicoApi.getIdPessoaFornecedor("http://localhost:3060/PessoaFornecedor", id);
+                    if (fornecedor == null) {
+                        System.out.println("Desculpe, mas este fornecedor não existe na base de dados!");
+                    } else {
+                        System.out.println(fornecedor);
+                        System.out.println("  ");
+                    }
+                    break;
+
+                default:
+                    System.out.println("  ");
+                    System.out.println("Opção inválida. Estas são as opções disponíveis (A, L, LI, E, C, S)");
+                    System.out.println("==============================");
+                    System.out.println("  ");
+                    break;
+            }
+        }
     }
 }

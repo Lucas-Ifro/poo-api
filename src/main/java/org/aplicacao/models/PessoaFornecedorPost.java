@@ -12,24 +12,24 @@ public class PessoaFornecedorPost {
     private String contato;
     private String telefones;
     private String fantasia;
-    private String razaoSocial;
+    private String razao_social;
     private String active;
-    private LocalDateTime dataLancamento;
 
-    // Construtor
-    public PessoaFornecedorPost(String cnpj, String responsavel, String contato, String telefones,
-                                String fantasia, String razaoSocial, String active, LocalDateTime dataLancamento) {
+
+
+    public PessoaFornecedorPost() {
+    }
+
+    public PessoaFornecedorPost(String cnpj, String responsavel, String contato, String telefones, String fantasia, String razao_social, String active) {
         this.cnpj = cnpj;
         this.responsavel = responsavel;
         this.contato = contato;
         this.telefones = telefones;
         this.fantasia = fantasia;
-        this.razaoSocial = razaoSocial;
+        this.razao_social = razao_social;
         this.active = active;
-        this.dataLancamento = dataLancamento;
     }
 
-    // Getters e Setters
     public String getCnpj() {
         return cnpj;
     }
@@ -70,12 +70,12 @@ public class PessoaFornecedorPost {
         this.fantasia = fantasia;
     }
 
-    public String getRazaoSocial() {
-        return razaoSocial;
+    public String getRazao_social() {
+        return razao_social;
     }
 
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
+    public void setRazao_social(String razao_social) {
+        this.razao_social = razao_social;
     }
 
     public String getActive() {
@@ -86,14 +86,6 @@ public class PessoaFornecedorPost {
         this.active = active;
     }
 
-    public LocalDateTime getDataLancamento() {
-        return dataLancamento;
-    }
-
-    public void setDataLancamento(LocalDateTime dataLancamento) {
-        this.dataLancamento = dataLancamento;
-    }
-
     @Override
     public String toString() {
         return "PessoaFornecedorPost{" +
@@ -102,9 +94,8 @@ public class PessoaFornecedorPost {
                 ", contato='" + contato + '\'' +
                 ", telefones='" + telefones + '\'' +
                 ", fantasia='" + fantasia + '\'' +
-                ", razaoSocial='" + razaoSocial + '\'' +
+                ", razao_social='" + razao_social + '\'' +
                 ", active='" + active + '\'' +
-                ", dataLancamento=" + dataLancamento +
                 '}';
     }
 }

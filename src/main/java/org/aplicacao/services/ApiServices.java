@@ -8,9 +8,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 import org.aplicacao.models.PessoaFornecedorPost;
 import org.aplicacao.models.ResponseObject;
+import org.aplicacao.models.ResponseList;
 
 public class ApiServices {
 
@@ -74,78 +76,70 @@ public class ApiServices {
 
     }
 
-    public PessoaFornecedor getPessoaFornecedor(String  endereco)  {
-        PessoaFornecedor PessoaFornecedor = null;
+    public List<PessoaFornecedor> getPessoaFornecedor(String endereco) {
+        List<PessoaFornecedor> pessoaFornecedorList = null;
         try {
-
             HttpResponse<String> response = httpGet(endereco);
-
             ObjectMapper mapper = new ObjectMapper();
-            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
-            PessoaFornecedor = responseList.getData();
-
-        } catch (Exception e){
-            System.out.println("Ocorreu um erro ao deserializar os elementos");
+            ResponseList responseList = mapper.readValue(response.body(), ResponseList.class);
+            pessoaFornecedorList = responseList.getData();
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro ao deserializar os elementos: " + e.getMessage());
         }
-        return PessoaFornecedor;
+        return pessoaFornecedorList;
     }
 
-    public PessoaFornecedor getIdPessoaFornecedor(String  endereco, int id)  {
-        PessoaFornecedor PessoaFornecedor = null;
+
+    public PessoaFornecedor getIdPessoaFornecedor(String  endereco, int id) {
+        PessoaFornecedor pessoaFornecedor = null;
         String enderecoConcatenado = String.format("%s/%d", endereco ,id);
         try {
 
             HttpResponse<String> response = httpGet(enderecoConcatenado);
-
             ObjectMapper mapper = new ObjectMapper();
-            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
-            PessoaFornecedor = responseList.getData();
+
+            ResponseObject responseObject = mapper.readValue(response.body(), ResponseObject.class);
+            pessoaFornecedor = responseObject.getData();
 
         } catch (Exception e){
             System.out.println("Ocorreu um erro ao deserializar os elementos");
         }
-        return PessoaFornecedor;
+        return pessoaFornecedor;
     }
 
-    public PessoaFornecedor postPessoaFornecedor(String  endereco, PessoaFornecedorPost compra)  {
-        PessoaFornecedor PessoaFornecedor = null;
+    public PessoaFornecedor postPessoaFornecedor(String  endereco, PessoaFornecedorPost pessoa)  {
+        PessoaFornecedor pessoaFornecedor = null;
         try {
-            //Serializando o objeto para enviar ao http
             ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(compra);
+            String jsonData = mapper.writeValueAsString(pessoa);
 
-            //Fazendo a requisicao
             HttpResponse<String> response = httpPost(endereco,jsonData);
-            //Lendo a resposta
-            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
-            PessoaFornecedor = responseList.getData();
+            System.out.println("Resposta da API: " + response.body());
+            ResponseObject responseObject = mapper.readValue(response.body(), ResponseObject.class);
+            pessoaFornecedor = responseObject.getData();
 
         } catch (Exception e){
             System.out.println("Ocorreu um erro ao deserializar os elementos");
         }
-        return PessoaFornecedor;
+        return pessoaFornecedor;
     }
 
-    public PessoaFornecedor putPessoaFornecedor(String  endereco, PessoaFornecedor compra, int id)  {
-        PessoaFornecedor PessoaFornecedor = null;
+    public PessoaFornecedor putPessoaFornecedor(String  endereco, PessoaFornecedor pessoa, int id)  {
+        PessoaFornecedor pessoaFornecedor = null;
         String enderecoConcatenado = String.format("%s/%d", endereco ,id);
         try {
-            //Construindo o json convertendo de objeto para string
+
             ObjectMapper mapper = new ObjectMapper();
-            String jsonData = mapper.writeValueAsString(compra);
+            String jsonData = mapper.writeValueAsString(pessoa);
 
-            //Chamando o metodo http para enviar o objeto
             HttpResponse<String> response = httpPut(enderecoConcatenado,jsonData);
-            //Lendo a resposta
-            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
-
-            //Atribuido o objeto
-            PessoaFornecedor = responseList.getData();
+            ResponseObject responseObject = mapper.readValue(response.body(), ResponseObject.class);
+            pessoaFornecedor = responseObject.getData();
 
         } catch (Exception e){
             System.out.println("Ocorreu um erro ao deserializar os elementos no put erro: "+ e.getMessage());
         }
-        return PessoaFornecedor;
+        return pessoaFornecedor;
     }
     public PessoaFornecedor deletePessoaFornecedor(String  endereco, int id)  {
         PessoaFornecedor PessoaFornecedor = null;
@@ -155,8 +149,8 @@ public class ApiServices {
             HttpResponse<String> response = httpDelete(enderecoConcatenado);
 
             ObjectMapper mapper = new ObjectMapper();
-            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
-            PessoaFornecedor = responseList.getData();
+            ResponseObject responseObject = mapper.readValue(response.body(), ResponseObject.class);
+            PessoaFornecedor = responseObject.getData();
 
         } catch (Exception e){
             System.out.println("Ocorreu um erro ao deserializar os elementos");

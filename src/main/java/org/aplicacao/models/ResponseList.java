@@ -10,9 +10,8 @@ public class ResponseList {
     private int code;
     private boolean error;
     private String message;
+    private List<String> errors;
 
-
-    // Getters e Setters
     public List<PessoaFornecedor> getData() {
         return data;
     }
@@ -21,20 +20,12 @@ public class ResponseList {
         this.data = data;
     }
 
-    public int getCode() {
-        return code;
+    public List<String> getErrors() {
+        return errors;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public boolean isError() {
-        return error;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     public String getMessage() {
@@ -45,7 +36,21 @@ public class ResponseList {
         this.message = message;
     }
 
+    public boolean isError() {
+        return error;
+    }
 
+    public void setError(boolean error) {
+        this.error = error;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     @Override
     public String toString() {
@@ -54,6 +59,7 @@ public class ResponseList {
                 ", code=" + code +
                 ", error=" + error +
                 ", message='" + message + '\'' +
+                ", errors=" + errors +
                 '}';
     }
 }
