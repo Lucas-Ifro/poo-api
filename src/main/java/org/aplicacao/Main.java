@@ -2,9 +2,9 @@ package org.aplicacao;
 
 import java.util.List;
 import org.aplicacao.models.PessoaFornecedorPost;
-import org.aplicacao.models.PessoaFornecedor;
-import org.aplicacao.services.ApiServices;
 
+import org.aplicacao.services.ApiServices;
+import org.aplicacao.models.PessoaFornecedor;
 import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,10 +15,10 @@ public class Main {
         ApiServices servicoApi = new ApiServices();
 
         // Remover paginação e obter a lista completa de fornecedores
-        List<PessoaFornecedor> listaFornecedor = servicoApi.getPessoaFornecedor("http://localhost:3060/PessoaFornecedor");
+        PessoaFornecedor listaFornecedor = servicoApi.getPessoaFornecedor("http://localhost:3060/PessoaFornecedor");
 
         // Obter um fornecedor por ID
-        int id = listaFornecedor.get(1).getId();
+        int id = 300;
         PessoaFornecedor listadaPorId = servicoApi.getIdPessoaFornecedor("http://localhost:3060/PessoaFornecedor", id);
 
         // Atualizar um fornecedor
@@ -26,8 +26,8 @@ public class Main {
         PessoaFornecedor atualizada = servicoApi.putPessoaFornecedor("http://localhost:3060/PessoaFornecedor", listadaPorId, id);
 
         // Criar um novo elemento
-        int comprasId = listaFornecedor.get(3).getErp_compras_id();
-        int produtosId = listaFornecedor.get(5).getErp_produtos_id();
+        //int comprasId = listaFornecedor.get(3).getErp_compras_id();
+        //int produtosId = listaFornecedor.get(5).getErp_produtos_id();
 
         // Criar a data no padrão ISO
         LocalDateTime now = LocalDateTime.now();
@@ -52,7 +52,7 @@ public class Main {
 
         // Exibir os resultados
         System.out.println("Fornecedor paginado:");
-        System.out.println(listaFornecedor.get(9).toString());
+        System.out.println(listaFornecedor.toString());
         System.out.println("Fornecedor por ID:");
         System.out.println(listadaPorId.toString());
         System.out.println("Fornecedor atualizado:");

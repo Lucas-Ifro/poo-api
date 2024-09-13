@@ -2,6 +2,8 @@ package org.aplicacao.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aplicacao.models.PessoaFornecedor;
+
+import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.URI;
@@ -14,7 +16,7 @@ public class ApiServices {
 
 
     @lombok.SneakyThrows
-    private  HttpResponse<String> httpGet(String endereco) {
+    private  HttpResponse<String> httpGet(String endereco) throws IOException, InterruptedException {
         HttpResponse<String> response = null;
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -27,7 +29,7 @@ public class ApiServices {
 
     }
     @lombok.SneakyThrows
-    private  HttpResponse<String> httpPost(String endereco, String body) {
+    private  HttpResponse<String> httpPost(String endereco, String body) throws IOException, InterruptedException {
         HttpResponse<String> response = null;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -42,7 +44,7 @@ public class ApiServices {
     }
 
     @lombok.SneakyThrows
-    private  HttpResponse<String> httpDelete(String endereco) {
+    private  HttpResponse<String> httpDelete(String endereco) throws IOException, InterruptedException {
         HttpResponse<String> response = null;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -58,7 +60,7 @@ public class ApiServices {
     }
 
     @lombok.SneakyThrows
-    private  HttpResponse<String> httpPut(String endereco,String body) {
+    private  HttpResponse<String> httpPut(String endereco,String body)  throws IOException, InterruptedException {
         HttpResponse<String> response = null;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -70,6 +72,22 @@ public class ApiServices {
 
         return response;
 
+    }
+
+    public PessoaFornecedor getPessoaFornecedor(String  endereco)  {
+        PessoaFornecedor PessoaFornecedor = null;
+        try {
+
+            HttpResponse<String> response = httpGet(endereco);
+
+            ObjectMapper mapper = new ObjectMapper();
+            ResponseObject responseList = mapper.readValue(response.body(), ResponseObject.class);
+            PessoaFornecedor = responseList.getData();
+
+        } catch (Exception e){
+            System.out.println("Ocorreu um erro ao deserializar os elementos");
+        }
+        return PessoaFornecedor;
     }
 
     public PessoaFornecedor getIdPessoaFornecedor(String  endereco, int id)  {
